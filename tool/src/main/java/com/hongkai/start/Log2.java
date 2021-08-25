@@ -1,5 +1,9 @@
 package com.hongkai.start;
 
+import com.alibaba.fastjson.JSON;
+import com.hongkai.common.CommonConfig;
+import com.hongkai.model.Account;
+import com.hongkai.utils.SqliteUtils;
 import com.sun.awt.AWTUtilities;
 
 import javax.swing.*;
@@ -7,8 +11,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 
 public class Log2 extends JFrame {
@@ -19,7 +25,6 @@ public class Log2 extends JFrame {
     private ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("png").getPath() + "/logon.png");
     private JButton back, confirm;
     private Font font = new Font("宋体", Font.BOLD, 23);
-    private boolean flag;
 
     public Log2() throws HeadlessException {
         setTitle("注册账号");
@@ -124,8 +129,31 @@ public class Log2 extends JFrame {
 
     private void event() {
         confirm.addActionListener((ActionEvent e)->{
-            this.dispose();
-            new Start();
+            try {
+                SqliteUtils sqliteUtils =new SqliteUtils(CommonConfig.dbPath);
+                sqliteUtils.openConnection();
+                List<Map<String, Object>> list= sqliteUtils.queryMap("select * from account");
+                List<Account> listCount = JSON.parseArray(JSON.toJSONString(list), Account.class);
+                String username=usernameFid.getText();
+                String passWord=new String(pwdFid.getPassword());
+
+                boolean flag=false;
+                for (Account account : listCount) {
+                    if(username.equals(account.getAccount()) && passWord.equals(account.getPassword())){
+                        flag=true;
+                    }
+                }
+
+                if(flag==true){
+                    this.dispose();
+                    new Start();
+                }else{
+                    JOptionPane.showMessageDialog(panel, "密码错误", "错误",JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         });
 
         back.addActionListener((ActionEvent e)->{

@@ -1,10 +1,16 @@
 package com.hongkai.start;
 
+import com.hongkai.common.CommonConfig;
 import com.hongkai.common.SwingCommon;
+import com.hongkai.model.ShowTableModel;
+import com.hongkai.utils.SqliteUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Map;
 
 
 public class Start {
@@ -189,17 +195,37 @@ public class Start {
 
 
     private void getTableInfo(){
+        try{
+            SqliteUtils sqliteUtils =new SqliteUtils(CommonConfig.dbPath);
+            sqliteUtils.openConnection();
+            ResultSet list= sqliteUtils.query("select * from record");
+            ShowTableModel showTableModel=new ShowTableModel(list);
+            table1.setModel(showTableModel);
+            table1.setRowHeight(30);
 
-        tableModel.setRowCount(0);
-        tableModel.setColumnIdentifiers(new Object[]{"序号","图片路径","图片描述"});
-        tableModel.addRow(new Object[]{1,"D:\\Downloads","5月1日采集"});
-        tableModel.addRow(new Object[]{2,"D:\\Downloads","5月2日采集"});
-        tableModel.addRow(new Object[]{3,"D:\\Downloads","5月3日采集"});
-        tableModel.addRow(new Object[]{4,"D:\\Downloads","5月4日采集"});
-        table1.setModel(tableModel);
-        table1.setRowHeight(30);
+            SwingCommon.FitTableColumns(table1);
+
+            Dimension size = table1.getTableHeader().getPreferredSize();
+            size.height = 32;//设置新的表头高度32
+            table1.getTableHeader().setPreferredSize(size);
+            table1.getTableHeader().setBackground(new Color(155, 221, 255));
+            table1.getTableHeader().setFont(new Font("微软雅黑", Font.BOLD, 12));
+            table1.getTableHeader().setReorderingAllowed(false);
+            table1.getTableHeader().setResizingAllowed(false);
+//            SwingCommon.FitTableColumns(table1);
+        }catch (Exception e){
+
+        }
 
 
+//        tableModel.setRowCount(0);
+//        tableModel.setColumnIdentifiers(new Object[]{"序号","图片路径","图片描述"});
+//        tableModel.addRow(new Object[]{1,"D:\\Downloads","5月1日采集"});
+//        tableModel.addRow(new Object[]{2,"D:\\Downloads","5月2日采集"});
+//        tableModel.addRow(new Object[]{3,"D:\\Downloads","5月3日采集"});
+//        tableModel.addRow(new Object[]{4,"D:\\Downloads","5月4日采集"});
+//        table1.setModel(tableModel);
+//        table1.setRowHeight(30);
     }
 
     private void event() {
