@@ -1,5 +1,8 @@
 package com.hongkai.common;
 
+import com.hongkai.model.ShowTableModel;
+import com.hongkai.utils.SqliteUtils;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.JTableHeader;
@@ -7,6 +10,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 
 public class SwingCommon {
     public static JButton changeIconSize(JButton button, String pictureName, int width, int height, String tip){
@@ -40,6 +45,30 @@ public class SwingCommon {
         return jComponent;
     }
 
+    public static void getTableInfo(JTable table1,JLabel label1,String sql){
+        try{
+            SqliteUtils sqliteUtils =new SqliteUtils(CommonConfig.dbPath);
+            sqliteUtils.openConnection();
+            List<Map<String,Object>> list= sqliteUtils.queryMap(sql);
+            ShowTableModel showTableModel=new ShowTableModel(list);
+            table1.setModel(showTableModel);
+            table1.setRowHeight(30);
+
+            SwingCommon.FitTableColumns(table1);
+
+            Dimension size = table1.getTableHeader().getPreferredSize();
+            size.height = 32;//设置新的表头高度32
+            table1.getTableHeader().setPreferredSize(size);
+            table1.getTableHeader().setBackground(new Color(155, 221, 255));
+            table1.getTableHeader().setFont(new Font("微软雅黑", Font.BOLD, 12));
+            table1.getTableHeader().setReorderingAllowed(false);
+            table1.getTableHeader().setResizingAllowed(false);
+
+            label1.setText(String.format("当前共计:%s条项目信息",list.size()));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     public static void FitTableColumns(JTable table) {
         JTableHeader header = table.getTableHeader(); //表头

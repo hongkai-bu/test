@@ -9,18 +9,15 @@ import org.apache.poi.xssf.usermodel.*;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ExcelUtils {
     // 导出时excel的扩展名
     public static final String EXTENSION_NAME = ".xlsx";
     // 03版excel扩展名
-    private static final String XLS = ".xls";
+    public static final String XLS = ".xls";
     // 07版excel扩展名
-    private static final String XLSX = ".xlsx";
+    public static final String XLSX = ".xlsx";
 
     private static Logger logger = Logger.getLogger(ExcelUtils.class);
 
@@ -33,6 +30,9 @@ public class ExcelUtils {
      */
     public static String getContent(Cell cell) {
         String cellValue = null;
+        if(cell==null){
+            return "";
+        }
         switch (cell.getCellTypeEnum()) {
             // 数字
             case NUMERIC:
@@ -58,7 +58,7 @@ public class ExcelUtils {
                 break;
             // 空值
             case BLANK:
-                cellValue = null;
+                cellValue = "";
                 break;
             // 错误
             case ERROR:
@@ -195,7 +195,7 @@ public class ExcelUtils {
      * @param sheetNum 开始解析的sheet序号，如果不指定，默认传值为-1，则会解析所有sheet
      * @return
      */
-    public static List<List<Map<String, Object>>> importExcel(String filePath, int startRow, int startCol, int sheetNum) {
+    public static List<List<Map<String, Object>>> readExcel(String filePath, int startRow, int startCol, int sheetNum) {
         logger.info("========================= ExcelUtils.java ->> importExcel()从Excel表格中获取数据 ->> 开始 =========================");
 
         // 用于存储最终整个Excel表格的数据
@@ -239,7 +239,7 @@ public class ExcelUtils {
                 // 获取指定sheet序号的sheet表格
                 sheet = workbook.getSheetAt((sheetNum - 1));
                 // 保存Sheet中的数据到List集合中
-                List<Map<String, Object>> sheetList = ExcelUtils.getDataBySheet(sheet, startRow, startCol, formulaEvaluator);
+                List<Map<String, Object>> sheetList = ExcelUtils.getDataBySheet2(sheet, startRow, startCol, formulaEvaluator);
 
                 resultList.add(sheetList);
             } else {
@@ -387,6 +387,87 @@ public class ExcelUtils {
         return sheetList;
     }
 
+    /**
+     * 获取sheet中的数据并返回一个List集合
+     *
+     * @param sheet            Sheet对象
+     * @param startRow         开始解析的行数
+     * @param startCol         开始解析的列数
+     * @param formulaEvaluator 公式计算器实例
+     * @return
+     * @throws Exception
+     */
+    private static List<Map<String, Object>> getDataBySheet2(Sheet sheet, int startRow, int startCol, FormulaEvaluator formulaEvaluator) throws Exception {
+
+        logger.info("========================= ExcelUtils.java ->> getDataBySheet()从Sheet表格中获取数据 ->> 开始 =========================");
+
+        List<Map<String, Object>> sheetList = new ArrayList<>();
+
+        /*
+            Sheet中的getPhysicalNumberOfRows()和getLastRowNum()区别：
+                > getPhysicalNumberOfRows()：获取的是物理行数，即会跳过空行的情况。
+                > getLastRowNum()：获取的是最后一行的行编号（编号从0开始）。
+         */
+        // 得到表格中总共的行数，会比实际的行数小1
+        int totalRowNum = sheet.getLastRowNum() + 1;
+        logger.info("ExcelUtils.java ->> getDataBySheet() ->> 当前Sheet表格中总行数totalRowNum = " + totalRowNum);
+
+        Row titleRow=sheet.getRow(0);
+        int totalCellNum = titleRow.getLastCellNum();
+        // 循环当前表格中所有行
+        for (int i = startRow+1; i < totalRowNum; i++) {
+            // 得到Row行对象
+            Row row = sheet.getRow(i);
+            if (rowNull(row)) {
+                logger.info("ExcelUtils.java ->> getDataBySheet() ->> 第" + (i + 1) + "行的内容为空，因此解析下一行");
+                continue;
+            }
+
+            /*
+                Row中的getPhysicalNumberOfCells()和getLastCellNum()区别：
+                    > getPhysicalNumberOfCells()：获取的是物理列数，即会跳过空列的情况。
+                    > getLastCellNum()：获取的是最后一列的列编号（编号从0开始）。
+             */
+            logger.info("ExcelUtils.java ->> getDataBySheet() ->> 第" + (i + 1) + "行的总列数totalCellNum = " + totalCellNum);
+            // 创建Map集合用于存储当前行中所有的单元格数据
+            Map<String, Object> rowMap = new HashMap<>();
+            // 循环当前行中所有单元格
+            for (int j = startCol; j < totalCellNum; j++) {
+
+                Cell titleCell=titleRow.getCell(j);
+                if(titleCell == null || titleCell.toString().trim().isEmpty()
+                        || "".equals(titleCell.toString()) || "null".equals(titleCell.toString())){
+                    logger.info("第"  + j + "列表头为空，不记录");
+                    continue;
+                }
+                // 得到Cell列对象
+                Cell cell = row.getCell(j);
+                String result =getContent(cell);
+                logger.info("ExcelUtils.java ->> getDataBySheet() ->> 第" + (i + 1) + "行的第" + (j + 1) + "列的单元格内容 = " + result);
+                // 保存到Map集合
+                rowMap.put(getContent(titleCell), result);
+            }
+            // 将每个行对象保存到List中
+            sheetList.add(rowMap);
+        }
+
+        logger.info("========================= ExcelUtils.java ->> getDataBySheet()从Sheet表格中获取数据 ->> 结束 =========================");
+
+        return sheetList;
+    }
+
+
+    //判断行为空
+    private static boolean rowNull(Row row) {
+        Iterator<Cell> cellItr = row.iterator();
+        while (cellItr.hasNext()) {
+            Cell c = cellItr.next();
+            if (!getContent(c).trim().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * 根据单元格数据类型获取单元格的值

@@ -69,4 +69,12 @@ public class SqliteUtils {
         return list;
     }
 
+    public void close(){
+        try{
+            statement.close();
+            conn.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

@@ -32,7 +32,9 @@
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
-            <properties/>
+            <properties>
+              <background color="-8617081"/>
+            </properties>
             <border type="none"/>
             <children>
               <component id="6aec7" class="javax.swing.JTable" binding="table1" default-binding="true">
@@ -41,7 +43,7 @@
                   <autoCreateColumnsFromModel value="true"/>
                   <autoCreateRowSorter value="true"/>
                   <autoResizeMode value="0"/>
-                  <autoscrolls value="true"/>
+                  <autoscrolls value="false"/>
                   <cellSelectionEnabled value="true"/>
                   <columnSelectionAllowed value="true"/>
                   <doubleBuffered value="false"/>
@@ -73,7 +75,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="f7ed4" layout-manager="GridLayoutManager" row-count="8" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="f7ed4" layout-manager="GridLayoutManager" row-count="9" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="20" left="20" bottom="20" right="20"/>
             <constraints>
               <tabbedpane title="登记信息"/>
@@ -302,14 +304,6 @@
                   <text value="标本去向："/>
                 </properties>
               </component>
-              <component id="127c4" class="javax.swing.JTextField" binding="textField14" default-binding="true">
-                <constraints>
-                  <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
               <component id="47409" class="javax.swing.JLabel" binding="label16">
                 <constraints>
                   <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -372,14 +366,6 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="58e26" class="javax.swing.JLabel" binding="label20">
-                <constraints>
-                  <grid row="6" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="标本描述："/>
-                </properties>
-              </component>
               <component id="88935" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
                 <constraints>
                   <grid row="6" column="1" row-span="2" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
@@ -391,7 +377,7 @@
                   <dragEnabled value="false"/>
                   <focusCycleRoot value="false"/>
                   <focusTraversalPolicyProvider value="false"/>
-                  <focusable value="false"/>
+                  <focusable value="true"/>
                   <lineWrap value="false"/>
                   <opaque value="true"/>
                   <tabSize value="8"/>
@@ -400,12 +386,33 @@
                   <wrapStyleWord value="false"/>
                 </properties>
               </component>
-              <component id="b5be6" class="javax.swing.JLabel" binding="label21">
+              <component id="fcc57" class="javax.swing.JComboBox" binding="comboBox3">
                 <constraints>
-                  <grid row="6" column="2" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="备注："/>
+                  <focusTraversalPolicyProvider value="false"/>
+                  <inheritsPopupMenu value="false"/>
+                  <toolTipText value=""/>
+                </properties>
+              </component>
+              <component id="31f13" class="javax.swing.JLabel" binding="label23">
+                <constraints>
+                  <grid row="7" column="5" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <foreground color="-12828863"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="eb81e" class="javax.swing.JButton" binding="button7">
+                <constraints>
+                  <grid row="6" column="5" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <borderPainted value="false"/>
+                  <focusPainted value="false"/>
+                  <text value="照片选择："/>
                 </properties>
               </component>
               <component id="23a16" class="javax.swing.JTextArea" binding="textArea2" default-binding="true">
@@ -418,36 +425,20 @@
                   <background color="-1"/>
                 </properties>
               </component>
-              <component id="f8651" class="javax.swing.JButton" binding="button6">
+              <component id="b5be6" class="javax.swing.JLabel" binding="label21">
                 <constraints>
-                  <grid row="6" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="6" column="2" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="dbf选择："/>
+                  <text value="备注："/>
                 </properties>
               </component>
-              <component id="c1296" class="javax.swing.JLabel" binding="label22">
+              <component id="58e26" class="javax.swing.JLabel" binding="label20">
                 <constraints>
-                  <grid row="6" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="6" column="0" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="dbf路径"/>
-                </properties>
-              </component>
-              <component id="31f13" class="javax.swing.JLabel" binding="label23">
-                <constraints>
-                  <grid row="7" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="照片路径"/>
-                </properties>
-              </component>
-              <component id="eb81e" class="javax.swing.JButton" binding="button7">
-                <constraints>
-                  <grid row="7" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="照片选择："/>
+                  <text value="标本描述："/>
                 </properties>
               </component>
             </children>
@@ -478,7 +469,16 @@
                       <autoscrolls value="true"/>
                     </properties>
                     <border type="none"/>
-                    <children/>
+                    <children>
+                      <component id="15625" class="javax.swing.JLabel" binding="label">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Label"/>
+                        </properties>
+                      </component>
+                    </children>
                   </grid>
                 </children>
               </scrollpane>
@@ -498,7 +498,7 @@
                   <borderPainted value="true"/>
                   <focusPainted value="false"/>
                   <opaque value="true"/>
-                  <text value=""/>
+                  <text value="下一张"/>
                 </properties>
               </component>
               <hspacer id="e39dd">
@@ -536,7 +536,7 @@
               <borderPainted value="false"/>
               <focusPainted value="false"/>
               <opaque value="false"/>
-              <text value="修改"/>
+              <text value="详情"/>
             </properties>
           </component>
           <component id="de959" class="javax.swing.JButton" binding="button8" default-binding="true">
