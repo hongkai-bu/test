@@ -754,9 +754,9 @@ public class ExcelUtils {
 
 
 
-    public static String exportBom(Map<String,Object> map) throws Exception {
+    public static String exportBom(Map<String,Object> map,String outPath) throws Exception {
         //模板的路径，这个在自己的项目中很容易弄错，相对位置一定要写对啊
-        String psth = ClassLoader.getSystemResource("excelModel").getPath()+"/model.xlsx";
+        String psth = "D:/DataBaseForNiHeWan/excelModel/model.xlsx";
         InputStream in =new FileInputStream(psth);
         XSSFWorkbook workbook = new XSSFWorkbook(in);
 
@@ -872,8 +872,8 @@ public class ExcelUtils {
         //插入图片
         patriarch.createPicture(anchor,puctureIndex);
 
-        writeExcel(workbook, "D:\\DataBaseForNiHeWan\\export\\"+sampleIdString+".xlsx");
-        return "D:\\DataBaseForNiHeWan\\export\\"+sampleIdString+".xlsx";
+        writeExcel(workbook, outPath+"\\"+sampleIdString+".xlsx");
+        return outPath+"\\"+sampleIdString+".xlsx";
     }
 
 

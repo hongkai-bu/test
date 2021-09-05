@@ -9,14 +9,13 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
 public class SwingCommon {
     public static JButton changeIconSize(JButton button, String pictureName, int width, int height, String tip){
         button.setBounds(0,0,width,height);
-        ImageIcon buttonImg=new ImageIcon(ClassLoader.getSystemResource("png").getPath() + "/"+pictureName);
+        ImageIcon buttonImg=new ImageIcon("D:/DataBaseForNiHeWan/png/"+pictureName);
         //改变图片的大小
         Image temp=buttonImg.getImage().getScaledInstance(button.getWidth(), button.getHeight(), buttonImg.getImage().SCALE_DEFAULT);
         button.setIcon(new ImageIcon(temp));
@@ -26,7 +25,7 @@ public class SwingCommon {
     }
 
     public static JButton changeIconSize(JButton button, String pictureName, String tip){
-        ImageIcon buttonImg=new ImageIcon(ClassLoader.getSystemResource("png").getPath() + "/"+pictureName);
+        ImageIcon buttonImg=new ImageIcon("D:/DataBaseForNiHeWan/png/"+pictureName);
         button.setIcon(buttonImg);
         button.setToolTipText(tip);    //提示
         return button;

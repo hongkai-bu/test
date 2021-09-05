@@ -22,7 +22,7 @@ public class Log2 extends JFrame {
     private JLabel label, username, title, pwd;
     private JTextField usernameFid;
     private JPasswordField pwdFid;
-    private ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource("png").getPath() + "/logon.png");
+    private ImageIcon icon = new ImageIcon("D:/DataBaseForNiHeWan/png/logon.png");
     private JButton back, confirm;
     private Font font = new Font("宋体", Font.BOLD, 23);
 
