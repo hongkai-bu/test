@@ -27,7 +27,7 @@ public enum ExcelName {
     exploreReason("发掘原因","exploreReason"),
     sampleDesc("标本描述","sampleDesc"),
     remark("备注","remark"),
-    dbfPaths("dbf路径","dbfPaths"),
+    pictureCount("照片数量","pictureCount"),
     picturePaths("照片路径","picturePaths");
 
     String chnName;

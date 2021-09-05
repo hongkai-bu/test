@@ -51,6 +51,7 @@ public class Start {
     private JButton button2;
     private JButton button3;
     private JButton button4;
+    private JButton button6;
     private JButton button7;
     private JLabel label2;
     private JLabel label3;
@@ -130,6 +131,7 @@ public class Start {
         SwingCommon.changeIconSize(button3,"Search.png","查询");
         SwingCommon.changeIconSize(button4,"FolderAdd.png","数据导入");
         SwingCommon.changeIconSize(button5,"Remove.png","删除");
+        SwingCommon.changeIconSize(button6,"NoteRemove.png","清空");
         SwingCommon.changeIconSize(button7,"ImageAdd.png","选择图片");
         SwingCommon.changeIconSize(button8,"Cd.png","保存");
         SwingCommon.changeIconSize(button9,"NoteEdit.png","修改");
@@ -143,6 +145,7 @@ public class Start {
         SwingCommon.changeFont(button3,16);
         SwingCommon.changeFont(button4,16);
         SwingCommon.changeFont(button5,16);
+        SwingCommon.changeFont(button6,16);
         SwingCommon.changeFont(button7,14);
         SwingCommon.changeFont(button8,16);
         SwingCommon.changeFont(button9,16);
@@ -192,6 +195,7 @@ public class Start {
         SwingCommon.changeFont(comboBox2,12);
         SwingCommon.changeFont(comboBox3,12);
 
+        comboBox1.addItem("");
         comboBox1.addItem("自采");
         comboBox1.addItem("转让");
         comboBox1.addItem("交换");
@@ -199,12 +203,14 @@ public class Start {
         comboBox1.addItem("赠与");
         comboBox1.addItem("其它");
 
+        comboBox2.addItem("");
         comboBox2.addItem("科研");
         comboBox2.addItem("抢救");
         comboBox2.addItem("科普");
         comboBox2.addItem("移交");
         comboBox2.addItem("其它");
 
+        comboBox3.addItem("");
         comboBox3.addItem("馆藏");
         comboBox3.addItem("借出研究");
         comboBox3.addItem("出境");
@@ -235,6 +241,7 @@ public class Start {
             label1.setText(String.format("当前共计:%s条项目信息",list.size()));
             sqliteUtils.close();
         }catch (Exception e){
+            JOptionPane.showMessageDialog(jpanel, e, "错误",JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }
@@ -249,6 +256,35 @@ public class Start {
                }
            }
             getTableInfo(allQuerySql);
+        });
+
+        button2.addActionListener(e->{
+            try{
+                int[] selRow = table1.getSelectedRows();
+                if(selRow.length>=1){
+                    int selColumn=0;
+                    SqliteUtils sqliteUtils =new SqliteUtils(CommonConfig.dbPath);
+                    sqliteUtils.openConnection();
+                    int id = Integer.valueOf(table1.getValueAt(selRow[0], selColumn).toString());
+                    String querySql = String.format("select * from record where id=%s", id);
+                    List<Map<String, Object>> result = sqliteUtils.queryMap(querySql);
+                    Map<String, Object> amap = result.get(0);
+                    String resultPath=ExcelUtils.exportBom(amap);
+                    sqliteUtils.close();
+                    JOptionPane.showMessageDialog(jpanel, "导出成功路径为:"+resultPath, "提示", JOptionPane.INFORMATION_MESSAGE);
+                }else {
+                    JOptionPane.showMessageDialog(jpanel, "请选择任意一行导出！", "提示",JOptionPane.INFORMATION_MESSAGE);
+                }
+            }catch (Exception e1){
+                JOptionPane.showMessageDialog(jpanel, e1, "错误",JOptionPane.ERROR_MESSAGE);
+                e1.printStackTrace();
+            }
+        });
+
+
+        button3.addActionListener(e->{
+            String sql=constructMapToQuerySql();
+            getTableInfo(sql);
         });
 
         button4.addActionListener(e->{
@@ -281,9 +317,14 @@ public class Start {
                     }
                     getTableInfo(allQuerySql);
                 }catch (Exception e1){
+                    JOptionPane.showMessageDialog(jpanel, e1, "错误",JOptionPane.ERROR_MESSAGE);
                     e1.printStackTrace();
                 }
             }
+        });
+
+        button6.addActionListener(e->{
+           clean();
         });
 
         button7.addActionListener(e->{
@@ -309,19 +350,42 @@ public class Start {
             label23.setText(lableText);
         });
 
+        button8.addActionListener(e->{
+            if(textField2.getText().isEmpty()){
+                JOptionPane.showMessageDialog(textField2, "样本ID不能为空", "错误",JOptionPane.ERROR_MESSAGE);
+            }
+            String sql=constructMapToSql();
+            try{
+                SqliteUtils sqliteUtils =new SqliteUtils(CommonConfig.dbPath);
+                sqliteUtils.openConnection();
+                sqliteUtils.updateOrInsert(sql);
+                sqliteUtils.close();
+                JOptionPane.showMessageDialog(jpanel, "修改完成", "提示",JOptionPane.INFORMATION_MESSAGE);
+                getTableInfo(allQuerySql);
+            }catch (Exception e1){
+                JOptionPane.showMessageDialog(jpanel, e1, "错误",JOptionPane.ERROR_MESSAGE);
+                e1.printStackTrace();
+            }
+        });
+
         button9.addActionListener(e->{
             try{
                 int[] selRow = table1.getSelectedRows();
-                int selColumn=0;
-                SqliteUtils sqliteUtils =new SqliteUtils(CommonConfig.dbPath);
-                sqliteUtils.openConnection();
-                int id = Integer.valueOf(table1.getValueAt(selRow[0], selColumn).toString());
-                String querySql = String.format("select * from record where id=%s", id);
-                List<Map<String, Object>> result = sqliteUtils.queryMap(querySql);
-                Map<String, Object> amap = result.get(0);
-                getDetails(amap);
-                sqliteUtils.close();
+                if (selRow.length >= 1) {
+                    int selColumn = 0;
+                    SqliteUtils sqliteUtils = new SqliteUtils(CommonConfig.dbPath);
+                    sqliteUtils.openConnection();
+                    int id = Integer.valueOf(table1.getValueAt(selRow[0], selColumn).toString());
+                    String querySql = String.format("select * from record where id=%s", id);
+                    List<Map<String, Object>> result = sqliteUtils.queryMap(querySql);
+                    Map<String, Object> amap = result.get(0);
+                    getDetails(amap);
+                    sqliteUtils.close();
+                } else {
+                    JOptionPane.showMessageDialog(jpanel, "请选择任意一行导出", "提示", JOptionPane.INFORMATION_MESSAGE);
+                }
             }catch (Exception e1){
+                JOptionPane.showMessageDialog(jpanel, e1, "错误",JOptionPane.ERROR_MESSAGE);
                 e1.printStackTrace();
             }
         });
@@ -338,11 +402,124 @@ public class Start {
                     JOptionPane.showMessageDialog(jpanel, "没有照片了！", "提示",JOptionPane.INFORMATION_MESSAGE);
                 }
             }catch (Exception e1){
+                JOptionPane.showMessageDialog(jpanel, e1, "错误",JOptionPane.ERROR_MESSAGE);
                 e1.printStackTrace();
             }
         });
     }
 
+    private void clean() {
+        textField2.setText("");
+        textField3.setText("");
+        textField4.setText("");
+        textField5.setText("");
+        textField6.setText("");
+        textField7.setText("");
+        textField8.setText("");
+        textField9.setText("");
+        textField10.setText("");
+        comboBox1.setSelectedItem("");
+        textField11.setText("");
+        textField12.setText("");
+        textField13.setText("");
+        comboBox3.setSelectedItem("");
+        textField15.setText("");
+        textField16.setText("");
+        textField17.setText("");
+        comboBox2.setSelectedItem("");
+        textArea1.setText("");
+        textArea2.setText("");
+        label23.setText("");
+    }
+
+    private String constructMapToQuerySql() {
+        Map<String,Object> map=constructMap();
+        if(haveValue(map)){
+            StringBuffer b1=new StringBuffer();
+            b1.append("SELECT * FROM record WHERE ");
+
+            StringBuffer b2=new StringBuffer();
+            for(String key:map.keySet()){
+                if(!map.get(key).toString().isEmpty()){
+                    if(!b2.toString().isEmpty()){
+                        b2.append(" AND ");
+                    }
+                    b2.append(key).append("=").append("'").append(map.get(key).toString()).append("'");
+                }
+            }
+
+            b1.append(b2.toString()).append(";");
+            return b1.toString();
+        }else{
+            return allQuerySql;
+        }
+    }
+
+    private boolean haveValue(Map<String, Object> map) {
+        for(String key:map.keySet()){
+            if(!map.get(key).toString().trim().isEmpty()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String constructMapToSql() {
+        Map<String,Object> map=constructMap();
+        StringBuffer b1=new StringBuffer();
+        b1.append("UPDATE record SET ");
+
+        if(!label23.getText().isEmpty()){
+            StringBuffer picturePath=new StringBuffer();
+            insertFiles=picturesChooser.getSelectedFiles();
+            for (File afile:insertFiles) {
+                String picpath= FileUtils.copy(afile,pictureDir);
+                if(!picturePath.toString().isEmpty()){
+                    picturePath.append(";");
+                }
+                picturePath.append(picpath);
+            }
+            map.put("picturePaths",picturePath.toString());
+        }
+
+        StringBuffer b2=new StringBuffer();
+        for(String key:map.keySet()){
+            if(!b2.toString().isEmpty()){
+                b2.append(",");
+            }
+            b2.append(key).append("=").append("'").append(map.get(key).toString()).append("'");
+        }
+
+
+        b1.append(b2.toString()).append(" WHERE sampleId='").append(map.get(ExcelName.sampleId.getEngName()).toString()).append("';");
+
+        return b1.toString();
+    }
+
+    private Map<String, Object> constructMap() {
+        Map<String, Object> map=new HashMap<>();
+        map.put(ExcelName.sampleId.getEngName(),textField2.getText());
+        map.put(ExcelName.sampleLocation.getEngName(),textField3.getText());
+        map.put(ExcelName.chinaName.getEngName(),textField4.getText());
+        map.put(ExcelName.latiName.getEngName(),textField5.getText());
+        map.put(ExcelName.proLocation.getEngName(),textField6.getText());
+        map.put(ExcelName.sampleType.getEngName(),textField7.getText());
+        map.put(ExcelName.category.getEngName(),textField8.getText());
+        map.put(ExcelName.protectLevel.getEngName(),textField9.getText());
+        map.put(ExcelName.origNumber.getEngName(),textField10.getText());
+        map.put(ExcelName.sampleSource.getEngName(),comboBox1.getSelectedItem().toString());
+        map.put(ExcelName.sampleStatus.getEngName(),textField11.getText());
+        map.put(ExcelName.sampleCount.getEngName(),textField12.getText());
+        map.put(ExcelName.pictureNumber.getEngName(),textField13.getText());
+        map.put(ExcelName.sampleGone.getEngName(),comboBox3.getSelectedItem().toString());
+        map.put(ExcelName.enterDate.getEngName(),textField15.getText());
+        map.put(ExcelName.exploreCompany.getEngName(),textField16.getText());
+        map.put(ExcelName.exploreDate.getEngName(),textField17.getText());
+        map.put(ExcelName.exploreReason.getEngName(),comboBox2.getSelectedItem().toString());
+        map.put(ExcelName.sampleDesc.getEngName(),textArea1.getText());
+        map.put(ExcelName.remark.getEngName(),textArea2.getText());
+        return map;
+    }
 
 
     private void getDetails(Map<String, Object> amap) {
@@ -408,6 +585,8 @@ public class Start {
                 textArea2.setText(amap.get(key).toString());
             }
             if(key.equals(ExcelName.picturePaths.getEngName())){
+                insertFiles=null;
+                label23.setText("");
                 oneRecordPicturePaths=amap.get(key).toString();
                 pics=oneRecordPicturePaths.split(";");
                 label24.setText(String.format("共计%s张照片，第1张",pics.length));
@@ -484,6 +663,15 @@ public class Start {
         }else if(label23.getText().isEmpty()){
             JOptionPane.showMessageDialog(label23, "未选择照片", "错误",JOptionPane.ERROR_MESSAGE);
             return false;
+        }else if(comboBox1.getSelectedItem().toString().isEmpty()){
+            JOptionPane.showMessageDialog(comboBox1, label11.getText()+"内容缺失", "错误",JOptionPane.ERROR_MESSAGE);
+            return false;
+        }else if(comboBox2.getSelectedItem().toString().isEmpty()){
+            JOptionPane.showMessageDialog(comboBox1, label19.getText()+"内容缺失", "错误",JOptionPane.ERROR_MESSAGE);
+            return false;
+        }else if(comboBox3.getSelectedItem().toString().isEmpty()){
+            JOptionPane.showMessageDialog(comboBox1, label15.getText()+"内容缺失", "错误",JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         return true;
     }
@@ -503,12 +691,12 @@ public class Start {
             StringBuffer insertSql=new StringBuffer();
             insertSql.append("insert into record (sampleId,sampleLocation,chnName,latiName,proLocation,sampleType,category," +
                     "protectLevel,origNumber,sampleSource,sampleStatus,sampleCount,pictureNumber,sampleGone,enterDate,exploreCompany," +
-                    "exploreDate,exploreReason,sampleDesc,remark,picturePaths) values (").append("'"+textField2.getText()+"',")
+                    "exploreDate,exploreReason,sampleDesc,remark,pictureCount,picturePaths) values (").append("'"+textField2.getText()+"',")
                     .append("'"+textField3.getText()+"',").append("'"+textField4.getText()+"',").append("'"+textField5.getText()+"',").append("'"+textField6.getText()+"',")
                     .append("'"+textField7.getText()+"',").append("'"+textField8.getText()+"',").append("'"+textField9.getText()+"',").append("'"+textField10.getText()+"',")
                     .append("'"+comboBox1.getSelectedItem().toString()+"',").append("'"+textField11.getText()+"',").append("'"+textField12.getText()+"',").append("'"+textField13.getText()+"',")
                     .append("'"+comboBox3.getSelectedItem().toString()+"',").append("'"+textField15.getText()+"',").append("'"+textField16.getText()+"',").append("'"+textField17.getText()+"',")
-                    .append("'"+comboBox2.getSelectedItem().toString()+"',").append("'"+textArea1.getText()+"',").append("'"+textArea2.getText()+"',").append("'"+picturePath.toString()+"');");
+                    .append("'"+comboBox2.getSelectedItem().toString()+"',").append("'"+textArea1.getText()+"',").append("'"+textArea2.getText()+"',").append("'"+insertFiles.length+"',").append("'"+picturePath.toString()+"');");
 
             logger.info(insertSql.toString());
             SqliteUtils sqliteUtils1 = new SqliteUtils(CommonConfig.dbPath);

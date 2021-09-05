@@ -18,9 +18,7 @@
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <minimum-size width="-1" height="200"/>
-            <preferred-size width="-1" height="200"/>
-            <maximum-size width="-1" height="400"/>
+            <preferred-size width="-1" height="300"/>
           </grid>
         </constraints>
         <properties>
@@ -69,7 +67,7 @@
       <tabbedpane id="2ea22" binding="tabbedPane1" default-binding="true">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="300" height="300"/>
+            <preferred-size width="-1" height="500"/>
           </grid>
         </constraints>
         <properties/>
@@ -562,6 +560,15 @@
               <focusPainted value="false"/>
               <opaque value="false"/>
               <text value="查询"/>
+            </properties>
+          </component>
+          <component id="7b9b9" class="javax.swing.JButton" binding="button6">
+            <constraints/>
+            <properties>
+              <borderPainted value="false"/>
+              <focusPainted value="false"/>
+              <opaque value="false"/>
+              <text value="清空"/>
             </properties>
           </component>
           <component id="b91b0" class="javax.swing.JSeparator">

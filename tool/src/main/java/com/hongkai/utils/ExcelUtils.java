@@ -1,11 +1,14 @@
 package com.hongkai.utils;
 
+import com.hongkai.enums.ExcelName;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -684,14 +687,14 @@ public class ExcelUtils {
 
         if ("title".equals(mark)) {
             // 设置字体的大小
-            font.setFontHeightInPoints((short) 11);
+            font.setFontHeightInPoints((short) 16);
             // 设置字体加粗
             font.setBold(true);
             // 设置字体高度
 //            font.setFontHeight((short) 240);
         } else {
             // 设置字体的大小
-            font.setFontHeightInPoints((short) 10);
+            font.setFontHeightInPoints((short) 12);
             // 设置字体加粗
             font.setBold(false);
 
@@ -705,6 +708,16 @@ public class ExcelUtils {
         ExcelUtils.setCellCommonStyle(cellStyle, font);
 
         return cellStyle;
+    }
+
+    /**
+     * 得到单元格样式
+     *
+     * @param cell 单元格对象，从模板中获取
+     * @return
+     */
+    private static CellStyle getCellStyle(Cell cell) {
+        return cell.getCellStyle();
     }
 
     /**
@@ -738,4 +751,189 @@ public class ExcelUtils {
         // 设置垂直对齐的样式为居中对齐
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
     }
+
+
+
+    public static String exportBom(Map<String,Object> map) throws Exception {
+        //模板的路径，这个在自己的项目中很容易弄错，相对位置一定要写对啊
+        String psth = ClassLoader.getSystemResource("excelModel").getPath()+"/model.xlsx";
+        InputStream in =new FileInputStream(psth);
+        XSSFWorkbook workbook = new XSSFWorkbook(in);
+
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        CellStyle cellStyle=getCellStyle(sheet.getRow(1).getCell(1));
+
+        String sampleIdString=map.get(ExcelName.sampleId.getEngName()).toString();
+        Cell sampleId=sheet.getRow(1).getCell(2);
+        sampleId.setCellValue(sampleIdString);
+        sampleId.setCellStyle(cellStyle);
+
+        String chinaNameString=map.get(ExcelName.chinaName.getEngName()).toString();
+        Cell chinaName=sheet.getRow(2).getCell(2);
+        chinaName.setCellValue(chinaNameString);
+        chinaName.setCellStyle(cellStyle);
+
+        String latiNameString=map.get(ExcelName.latiName.getEngName()).toString();
+        Cell latiName=sheet.getRow(3).getCell(2);
+        latiName.setCellValue(latiNameString);
+        latiName.setCellStyle(cellStyle);
+
+        String sampleGoneString=map.get(ExcelName.sampleGone.getEngName()).toString();
+        Cell sampleGone=sheet.getRow(4).getCell(4);
+        sampleGone.setCellValue(sampleGoneString);
+        sampleGone.setCellStyle(cellStyle);
+
+        String proLocationString=map.get(ExcelName.proLocation.getEngName()).toString();
+        Cell proLocation=sheet.getRow(5).getCell(2);
+        proLocation.setCellValue(proLocationString);
+        proLocation.setCellStyle(cellStyle);
+
+        String sampleTypeString=map.get(ExcelName.sampleType.getEngName()).toString();
+        Cell sampleType=sheet.getRow(6).getCell(2);
+        sampleType.setCellValue(sampleTypeString);
+        sampleType.setCellStyle(cellStyle);
+
+        String categoryString=map.get(ExcelName.category.getEngName()).toString();
+        Cell category=sheet.getRow(7).getCell(2);
+        category.setCellValue(categoryString);
+        category.setCellStyle(cellStyle);
+
+        String sampleSourceString=map.get(ExcelName.sampleSource.getEngName()).toString();
+        Cell sampleSource=sheet.getRow(8).getCell(2);
+        sampleSource.setCellValue(sampleSourceString);
+        sampleSource.setCellStyle(cellStyle);
+
+        String sampleStatusString=map.get(ExcelName.sampleStatus.getEngName()).toString();
+        Cell sampleStatus=sheet.getRow(9).getCell(2);
+        sampleStatus.setCellValue(sampleStatusString);
+        sampleStatus.setCellStyle(cellStyle);
+
+        String sampleCountString=map.get(ExcelName.sampleCount.getEngName()).toString();
+        Cell sampleCount=sheet.getRow(9).getCell(4);
+        sampleCount.setCellValue(sampleCountString);
+        sampleCount.setCellStyle(cellStyle);
+
+        String origNumberString=map.get(ExcelName.origNumber.getEngName()).toString();
+        Cell origNumber=sheet.getRow(9).getCell(7);
+        origNumber.setCellValue(origNumberString);
+        origNumber.setCellStyle(cellStyle);
+
+        String protectLevelString=map.get(ExcelName.protectLevel.getEngName()).toString();
+        Cell protectLevel=sheet.getRow(10).getCell(2);
+        protectLevel.setCellValue(protectLevelString);
+        protectLevel.setCellStyle(cellStyle);
+
+        String pictureNumberString=map.get(ExcelName.pictureNumber.getEngName()).toString();
+        Cell pictureNumber=sheet.getRow(10).getCell(4);
+        pictureNumber.setCellValue(pictureNumberString);
+        pictureNumber.setCellStyle(cellStyle);
+
+        String enterDateString=map.get(ExcelName.enterDate.getEngName()).toString();
+        Cell enterDate=sheet.getRow(10).getCell(7);
+        enterDate.setCellValue(enterDateString);
+        enterDate.setCellStyle(cellStyle);
+
+        String sampleDescString=map.get(ExcelName.sampleDesc.getEngName()).toString();
+        Cell sampleDesc=sheet.getRow(11).getCell(2);
+        sampleDesc.setCellValue(sampleDescString);
+        sampleDesc.setCellStyle(cellStyle);
+
+        String exploreCompanyString=map.get(ExcelName.exploreCompany.getEngName()).toString();
+        Cell exploreCompany=sheet.getRow(19).getCell(2);
+        exploreCompany.setCellValue(exploreCompanyString);
+        exploreCompany.setCellStyle(cellStyle);
+
+        String exploreReasonString=map.get(ExcelName.exploreReason.getEngName()).toString();
+        Cell exploreReason=sheet.getRow(19).getCell(5);
+        exploreReason.setCellValue(exploreReasonString);
+        exploreReason.setCellStyle(cellStyle);
+
+        String exploreDateString=map.get(ExcelName.exploreDate.getEngName()).toString();
+        Cell exploreDate=sheet.getRow(20).getCell(5);
+        exploreDate.setCellValue(exploreDateString);
+        exploreDate.setCellStyle(cellStyle);
+
+        String remarkString=map.get(ExcelName.remark.getEngName()).toString();
+        Cell remark=sheet.getRow(21).getCell(2);
+        remark.setCellValue(remarkString);
+        remark.setCellStyle(cellStyle);
+
+        ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
+        String picturePath=map.get(ExcelName.picturePaths.getEngName()).toString().split(";")[0];
+        BufferedImage bufferImg = ImageIO.read(new File(picturePath));
+        ImageIO.write(bufferImg, "jpg", byteArrayOut);
+        byte[] imgtypes = byteArrayOut.toByteArray();
+        int puctureIndex = workbook.addPicture(imgtypes, HSSFWorkbook.PICTURE_TYPE_JPEG);
+        //画图的顶级管理器，一个sheet只能获取一个（一定要注意这点）
+        XSSFDrawing  patriarch = sheet.createDrawingPatriarch();
+        //anchor主要用于设置图片的属性
+        XSSFClientAnchor anchor = new XSSFClientAnchor(9525*3, 9525*3, -9525*1, -9525*1,(short)5, 1, (short) 9, 9);
+        anchor.setAnchorType(ClientAnchor.AnchorType.MOVE_AND_RESIZE);
+        //插入图片
+        patriarch.createPicture(anchor,puctureIndex);
+
+        writeExcel(workbook, "D:\\DataBaseForNiHeWan\\export\\"+sampleIdString+".xlsx");
+        return "D:\\DataBaseForNiHeWan\\export\\"+sampleIdString+".xlsx";
+    }
+
+
+    private static void writeExcel(Workbook work, String fileName) throws IOException {
+        OutputStream out = null;
+        try {
+            out = new FileOutputStream(fileName);
+            work.write(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            out.close();
+        }
+    }
+
+    private static Cell setCellStyleWithStyleAndValue(CellStyle style, Cell cell, String value) {
+        cell.setCellStyle(style);
+        cell.setCellValue(value);
+        return cell;
+    }
+
+//    private static Cell setCellStyleWithStyleAndValue(CellStyle style, Cell cell, Double value) {
+//        cell.setCellStyle(style);
+//        cell.setCellValue(value);
+//        return cell;
+//    }
+//
+//    private static Cell setCellStyleWithValue(Cell cell, String value) {
+//        cell.setCellStyle(cellstyle);
+//        cell.setCellValue(value);
+//        return cell;
+//    }
+//
+//
+//    private static Cell setCellStyleWithStyleAndValue(CellStyle style, Cell cell, RichTextString value) {
+//        cell.setCellStyle(style);
+//        cell.setCellValue(value);
+//        return cell;
+//    }
+//
+//    private static Cell setCellStyleWithValue(Cell cell, int value) {
+//        cell.setCellStyle(cellstyle);
+//        cell.setCellValue(value);
+//        return cell;
+//    }
+//
+//    private static Cell setCellStyleWithValue(Cell cell, double value) {
+//        cell.setCellStyle(cellstyle);
+//        cell.setCellValue(value);
+//        return cell;
+//    }
+
+//    private static XSSFCellStyle createCellStyle(Workbook wb) {
+//        cellstyle = (XSSFCellStyle) wb.createCellStyle();
+//        cellstyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+////        cellstyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+////        cellstyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+////        cellstyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+////        cellstyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
+//        cellstyle.setVerticalAlignment(XSSFCellStyle.VERTICAL_CENTER);
+//        return cellstyle;
+//    }
 }
