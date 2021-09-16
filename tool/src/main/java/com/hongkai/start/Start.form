@@ -31,25 +31,15 @@
               <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <autoscrolls value="false"/>
               <background color="-8617081"/>
             </properties>
             <border type="none"/>
             <children>
-              <component id="6aec7" class="javax.swing.JTable" binding="table1" default-binding="true">
+              <component id="eabca" class="javax.swing.JTable" binding="table1" default-binding="true">
                 <constraints/>
                 <properties>
-                  <autoCreateColumnsFromModel value="true"/>
-                  <autoCreateRowSorter value="true"/>
                   <autoResizeMode value="0"/>
-                  <autoscrolls value="false"/>
-                  <cellSelectionEnabled value="true"/>
-                  <columnSelectionAllowed value="true"/>
-                  <doubleBuffered value="false"/>
-                  <dragEnabled value="false"/>
-                  <enabled value="true"/>
-                  <inheritsPopupMenu value="true"/>
-                  <opaque value="true"/>
-                  <rowHeight value="30"/>
                 </properties>
               </component>
             </children>

@@ -629,49 +629,52 @@ public class Start {
         if (textField2.getText().isEmpty()) {
             JOptionPane.showMessageDialog(textField2, label2.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
             return false;
-        } else if (textField3.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(textField3, label3.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (textField4.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(textField4, label4.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (textField6.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(textField6, label6.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (textField10.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(textField10, label10.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (textField11.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(textField11, label12.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (textField12.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(textField12, label13.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (textField13.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(textField13, label14.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (textField15.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(textField15, label16.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (textField16.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(textField16, label17.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (textField17.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(textField17, label18.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (label23.getText().isEmpty()) {
+        }
+//        else if (textField3.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(textField3, label3.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        } else if (textField4.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(textField4, label4.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        } else if (textField6.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(textField6, label6.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        } else if (textField10.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(textField10, label10.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        } else if (textField11.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(textField11, label12.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        } else if (textField12.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(textField12, label13.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        } else if (textField13.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(textField13, label14.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        } else if (textField15.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(textField15, label16.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        } else if (textField16.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(textField16, label17.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        } else if (textField17.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(textField17, label18.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        }
+        else if (label23.getText().isEmpty()) {
             JOptionPane.showMessageDialog(label23, "未选择照片", "错误", JOptionPane.ERROR_MESSAGE);
             return false;
-        } else if (comboBox1.getSelectedItem().toString().isEmpty()) {
-            JOptionPane.showMessageDialog(comboBox1, label11.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (comboBox2.getSelectedItem().toString().isEmpty()) {
-            JOptionPane.showMessageDialog(comboBox1, label19.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (comboBox3.getSelectedItem().toString().isEmpty()) {
-            JOptionPane.showMessageDialog(comboBox1, label15.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
-            return false;
         }
+//        else if (comboBox1.getSelectedItem().toString().isEmpty()) {
+//            JOptionPane.showMessageDialog(comboBox1, label11.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        } else if (comboBox2.getSelectedItem().toString().isEmpty()) {
+//            JOptionPane.showMessageDialog(comboBox1, label19.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        } else if (comboBox3.getSelectedItem().toString().isEmpty()) {
+//            JOptionPane.showMessageDialog(comboBox1, label15.getText() + "内容缺失", "错误", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        }
         return true;
     }
 
@@ -741,21 +744,11 @@ public class Start {
         panel1.setBackground(new Color(-66049));
         jpanel.add(panel1, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(-1, 300), null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
+        scrollPane1.setAutoscrolls(false);
         scrollPane1.setBackground(new Color(-8617081));
         panel1.add(scrollPane1, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         table1 = new JTable();
-        table1.setAutoCreateColumnsFromModel(true);
-        table1.setAutoCreateRowSorter(true);
         table1.setAutoResizeMode(0);
-        table1.setAutoscrolls(false);
-        table1.setCellSelectionEnabled(true);
-        table1.setColumnSelectionAllowed(true);
-        table1.setDoubleBuffered(false);
-        table1.setDragEnabled(false);
-        table1.setEnabled(true);
-        table1.setInheritsPopupMenu(true);
-        table1.setOpaque(true);
-        table1.setRowHeight(30);
         scrollPane1.setViewportView(table1);
         label1 = new JLabel();
         label1.setText("当前共计:0条项目信息");
